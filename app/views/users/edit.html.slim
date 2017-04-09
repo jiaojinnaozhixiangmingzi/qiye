@@ -1,0 +1,13 @@
+h1 Editing user
+
+= simple_form_for(@user) do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :email
+    = f.input :name
+  .form-actions
+    = f.button :submit
+
+
+= link_to 'Back', users_path
+

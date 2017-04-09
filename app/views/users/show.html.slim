@@ -1,0 +1,12 @@
+h1 Show user
+p
+  strong 登陆账号:
+  = @user.mobile
+p
+  strong 姓名:
+  = @user.name
+p
+  strong email:
+  = @user.email
+
+= link_to 'Back', users_path
