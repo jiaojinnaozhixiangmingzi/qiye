@@ -35,10 +35,10 @@ class WorkersController < ApplicationController
     @worker = Worker.where(["email = ? and encrypted_password = ?", params[:email], params[:encrypted_password]])
 
     respond_to do |format|
-      if @worker == nil || @worker == ""#验证worker对象不为空  
-        format.json { render :json => 'Login failed!!!'.to_json }
+      if @worker.empty?
+        format.json { render :json => {:data => "Login failed"}.to_json}
       else
-        format.json { render :json => @worker }
+        format.json { render :json => {:data => "Login succ!"}.to_json}
       end
     end
   end
@@ -90,7 +90,7 @@ class WorkersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def worker_params
-      params.require(:worker).permit(:email, :password, :password_confirmation, role_ids: [], city_ids: [])
+      params.require(:worker).permit(:email, :encrypted_password, role_ids: [], city_ids: [])
     end
 
 end
