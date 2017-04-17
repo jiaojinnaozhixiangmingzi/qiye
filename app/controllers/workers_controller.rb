@@ -18,7 +18,7 @@ class WorkersController < ApplicationController
   end
 
   def create
-    @worker = Worker.new(worker_params)
+    @worker = Worker.new(worker_create_params)
 
     respond_to do |format|
       if @worker.save
@@ -92,5 +92,9 @@ class WorkersController < ApplicationController
     def worker_params
       params.require(:worker).permit(:email, :encrypted_password, role_ids: [], city_ids: [])
     end
+
+   def worker_create_params
+     params.require(:worker).permit(:email, :password, :encrypted_password, role_ids: [], city_ids: [])
+   end
 
 end

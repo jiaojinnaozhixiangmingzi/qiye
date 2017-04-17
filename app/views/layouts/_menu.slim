@@ -18,11 +18,6 @@
                   = link_to "人员", workers_path
                 li class="#{is_active?('roles', params[:controller])}"
                   = link_to "角色", roles_path
-            li.dropdown
-              = link_to "用户 <b class='caret'></b>".html_safe, '#', :class => 'dropdown-toggle', data: {toggle: 'dropdown'}
-              ul.dropdown-menu
-                li class="#{is_active?('users', params[:controller])}"
-                  = link_to "用户管理", users_path
           - if current_worker.has_role?(:yunying)
             li.dropdown
               = link_to "总部管理 <b class='caret'></b>".html_safe, '#', :class => 'dropdown-toggle', data: {toggle: 'dropdown'}

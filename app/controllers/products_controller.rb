@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   load_and_authorize_resource
-  
+
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   before_action :set_category
 
@@ -43,8 +43,14 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
+    params = product_params
+    if params['logo']
+      filename = generate_filename
+      Image.upload(params['logo'].tempfile.path, filename)
+      params['logo'] = filename
+    end
     respond_to do |format|
-      if @product.update(product_params)
+      if @product.update(params)
         format.html { redirect_to @category, notice: 'Product was successfully updated.' }
         format.json { render :show, status: :ok, location: @product }
       else
@@ -76,5 +82,9 @@ class ProductsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
       params.require(:product).permit(:name, :logo, :is_del, :category_id)
+    end
+
+    def generate_filename
+      "category-#{Time.now.to_i * 1000 + rand(1000)}"
     end
 end

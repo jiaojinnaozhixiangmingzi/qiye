@@ -1,3 +1,6 @@
 qiniu:
   access_key: pgMJMEHCaTzUeH-NZRKh2QffJxUJBMHHx3T8ZalR
   secret_key: p9s-8hNdylxvP13djLgZsVwTecF0nfEFJF3IeqS4
+
+  #  access_key: 9yXHgOVc4YPZWbLKE2gOvTGPkxHXqv5sNQ6NKyq8
+  #  secret_key: GQ6lCaPDNmAdgn035EQiVg-p_rZBMw_khBkhVCKQ
