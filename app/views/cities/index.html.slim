@@ -5,9 +5,9 @@
     table.table.table-striped
       thead
         tr
-          th Name
-          th Region
-          th Category
+          th 名称
+          th 行政区
+          th 品类
           th
           th
           th
@@ -18,8 +18,8 @@
             td = city.name
             td = city.region
             td = city.categories.map(&:name).join(',')
-            td = link_to 'Show', city
-            td = link_to 'Edit', edit_city_path(city)
-            td = link_to 'Destroy', city, data: { confirm: 'Are you sure?' }, method: :delete
+            td = link_to '详情', city
+            td = link_to '编辑', edit_city_path(city)
+            td = link_to '删除', city, data: { confirm: '确认删除?' }, method: :delete
   .panel-footer
-    = link_to 'New City', new_city_path, class: 'btn btn-info btn-sm'
+    = link_to '新建城市', new_city_path, class: 'btn btn-info btn-sm'

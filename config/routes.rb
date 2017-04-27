@@ -27,7 +27,11 @@ Rails.application.routes.draw do
 
   resources :prices
 
-  resources :price_rules
+  resources :price_rules do
+    collection do
+      get :getPriceRules
+    end
+  end
 
   resources :stations do 
     collection do 

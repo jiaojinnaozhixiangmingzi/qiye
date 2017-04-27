@@ -1,8 +1,8 @@
 class ProductsController < ApplicationController
-  load_and_authorize_resource
+  # load_and_authorize_resource
 
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  before_action :set_category
+  # before_action :set_category
 
   # GET /products
   # GET /products.json
@@ -67,6 +67,19 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def getByCityAndCategory
+    @products = Product.select("products.id, products.name, products.logo, products.is_del, products.category_id,
+prices.price1, prices.price2, prices.price3, prices.price4, prices.price5, prices.price6").joins("left join prices on
+ prices.product_id = products.id").where (["category_id =?", params[:categoryId]])
+    respond_to do |format|
+      if @products.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @products}.to_json }
+      end
     end
   end
 

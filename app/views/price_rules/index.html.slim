@@ -6,9 +6,9 @@
       table.table.table-striped
         thead
           tr
-            th Grade
-            th Category
-            th From date
+            th 价格等级
+            th 品类
+            th 开始生效日期
             th
             th
             th
@@ -19,8 +19,8 @@
               td = show_grade(price_rule.grade)
               td = price_rule.category.name
               td = price_rule.from_date
-              td = link_to 'Show', price_rule
-              td = link_to 'Edit', edit_price_rule_path(price_rule)
-              td = link_to 'Destroy', price_rule, data: { confirm: 'Are you sure?' }, method: :delete
+              td = link_to '详情', price_rule
+              td = link_to '编辑', edit_price_rule_path(price_rule)
+              td = link_to '删除', price_rule, data: { confirm: '确认删除?' }, method: :delete
     .panel-footer
-      = link_to 'New Price rule', new_price_rule_path(category: category), class: 'btn btn-info btn-sm'
+      = link_to '新建价格规则', new_price_rule_path(category: category), class: 'btn btn-info btn-sm'

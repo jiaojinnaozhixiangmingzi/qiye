@@ -23,7 +23,7 @@
                   = price.send("price#{i}")
     = will_paginate @prices, renderer: BootstrapPagination::Rails
   .panel-footer
-    = link_to '初始化', init_prices_category_path(@category), class: 'btn btn-info btn-sm', method: :post
+    = link_to '初始', init_prices_category_path(@category), class: 'btn btn-info btn-sm', method: :post
 
 javascript:
   // 设置为空时的填充文字

@@ -5,9 +5,9 @@
     table.table.table-striped
       thead
         tr
-          th Name
-          th Logo
-          th Is del
+          th 名称
+          th 标志
+          th 状态
           th
           th
           th
@@ -22,10 +22,10 @@
                 span.label.label-primary 是
               - else
                 span.label.label-default 否 
-            td = link_to 'Show', category
-            td = link_to 'Edit', edit_category_path(category)
-            td = link_to 'Destroy', category, data: { confirm: 'Are you sure?' }, method: :delete
+            td = link_to '详情', category
+            td = link_to '编辑', edit_category_path(category)
+            td = link_to '删除', category, data: { confirm: '确认删除?' }, method: :delete
 
     = will_paginate @categories, renderer: BootstrapPagination::Rails
   .panel-footer
-    = link_to 'New Category', new_category_path, class: 'btn btn-info btn-sm'
+    = link_to '新建品类', new_category_path, class: 'btn btn-info btn-sm'

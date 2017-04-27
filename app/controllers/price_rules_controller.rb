@@ -59,7 +59,20 @@ class PriceRulesController < ApplicationController
       format.html { redirect_to price_rules_url, notice: 'Price rule was successfully destroyed.' }
       format.json { head :no_content }
     end
+    end
+  def getPriceRules
+    rule = params[:city]
+    @price_rules = PriceRule.find_by_sql(["select * from price_rules where price_rules.city_id = ? and price_rules.category_id
+ = ? and price_rules.from_date < now() order by price_rules.from_date desc limit 1", params[:cityId], params[:categoryId]])
+    respond_to do |format|
+      if @price_rules.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @price_rules}.to_json }
+      end
+    end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

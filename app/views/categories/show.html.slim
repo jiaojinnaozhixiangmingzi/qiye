@@ -10,9 +10,9 @@ p
   strong Is del:
   = @category.is_del
 
-= link_to 'Edit', edit_category_path(@category)
+= link_to '编辑', edit_category_path(@category)
 '|
-= link_to 'Back', categories_path
+= link_to '返回', categories_path
 
 
 .col-md-12
@@ -23,9 +23,9 @@ p
       table.table.table-striped
         thead
           tr
-            th width='25%' Name
-            th width='10%' Logo
-            th width='10%' is_del
+            th width='20%' 名称
+            th width='15%' 标志
+            th width='15%' 状态
             th width='5%' 
             th width='5%' 
         tbody

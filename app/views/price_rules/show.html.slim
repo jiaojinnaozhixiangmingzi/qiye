@@ -42,6 +42,6 @@
                     = price.send("price#{i}")
         = will_paginate @prices, renderer: BootstrapPagination::Rails
 
-= link_to 'Edit', edit_price_rule_path(@price_rule)
+= link_to '编辑', edit_price_rule_path(@price_rule)
 '|
-= link_to 'Back', price_rules_path
+= link_to '返回', price_rules_path
