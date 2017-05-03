@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
   resources :price_rules do
     collection do
-      get :getPriceRules
+      post :getPriceRules
     end
   end
 
