@@ -61,6 +61,20 @@ class WaybillsController < ApplicationController
     end
   end
 
+  def createWaybill
+    @waybill = Waybill.new(waybill_params)
+    @orders = WayBill.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id = (SELECT id FROM
+addresses WHERE addressable_type = 'station' AND addressable_id = (SELECT station_id from couriers_stations where
+courier_id = ?))", params[:courierId]])
+    respond_to do |format|
+      if @orders.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @orders}.to_json }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_waybill
@@ -69,6 +83,11 @@ class WaybillsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def waybill_params
-      params.require(:waybill).permit(:status, :sender_type, :sender_id, :receiver_type, :receiver_id, :next_waybill_id, :exp_time, :actual_time, :order_id)
+      params.require(:waybill).permit(:status, :sender_type, :sender_id, :receiver_type, :receiver_id, :exp_time,
+                                      :actual_time, :order_id)
+      end
+
+    def create_waybill_params
+      params.require(:waybill).permit(:sender_type, :sender_id, :receiver_type, :receiver_id, :order_id)
     end
 end

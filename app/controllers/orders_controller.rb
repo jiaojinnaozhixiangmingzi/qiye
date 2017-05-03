@@ -66,6 +66,19 @@ class OrdersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to @order, notice: 'Order was successfully destroyed.' }
     end
+    end
+
+  def sendOrder
+    @orders = Order.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id = (SELECT id FROM
+addresses WHERE addressable_type = 'station' AND addressable_id = (SELECT station_id from couriers_stations where
+courier_id = ?))", params[:courierId]])
+    respond_to do |format|
+      if @orders.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @orders}.to_json }
+      end
+    end
   end
 
   private
@@ -77,5 +90,5 @@ class OrdersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       params.require(:order).permit(:category_id, :user_id, :address_id, :total_price, :status, :courier_status, :voucher_status, :cleaning_status)
-    end
+      end
 end

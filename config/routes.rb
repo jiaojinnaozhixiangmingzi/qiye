@@ -55,8 +55,15 @@ Rails.application.routes.draw do
   resources :orders do 
     member do 
       post :paidan
+      end
+    collection do
+      post :sendOrder
     end
   end
 
-  resources :waybills
+  resources :waybills do
+    collection do
+      post :createWaybill
+    end
+  end
 end
