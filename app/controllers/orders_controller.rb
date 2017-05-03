@@ -29,7 +29,7 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.save
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order }
+        format.json { render :json => {:data => @order}.to_json }
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -81,6 +81,18 @@ courier_id = ?))", params[:courierId]])
     end
   end
 
+  def createOrder
+    @order = Order.new(create_order_params)
+    respond_to do |format|
+      if @order.save
+        format.json { render :json => {:data => @order}.to_json }
+      else
+        format.html { render :new }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
@@ -91,4 +103,7 @@ courier_id = ?))", params[:courierId]])
     def order_params
       params.require(:order).permit(:category_id, :user_id, :address_id, :total_price, :status, :courier_status, :voucher_status, :cleaning_status)
       end
+    def create_order_params
+      params.permit(:category_id, :user_id, :address_id, :total_price, :status, :courier_status, :voucher_status, :cleaning_status)
+    end
 end

@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       end
     collection do
       post :sendOrder
+      post :createOrder
     end
   end
 
