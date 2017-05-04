@@ -62,14 +62,23 @@ class WaybillsController < ApplicationController
   end
 
   def fightWaybill
-    @waybill = WayBill.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id = (SELECT id FROM
-addresses WHERE addressable_type = 'station' AND addressable_id = (SELECT station_id from couriers_stations where
-courier_id = ?))", params[:courierId]])
+    @u_t_c = Waybill.find_by_sql(["SELECT * FROM waybills WHERE sender_type = 'User' AND receiver_type =
+'Courier' AND order_id = ?", params[:orderId]])
+    @c_t_s = Waybill.find_by_sql(["SELECT * FROM waybills WHERE sender_type = 'Courier' AND receiver_type =
+'Station' AND order_id = ?", params[:orderId]])
+    @s_t_c = Waybill.find_by_sql(["SELECT * FROM waybills WHERE sender_type = 'Station' AND receiver_type =
+'Courier' AND order_id = ?", params[:orderId]])
+    @c_t_u = Waybill.find_by_sql(["SELECT * FROM waybills WHERE sender_type = 'Courier' AND receiver_type =
+'User' AND order_id = ?", params[:orderId]])
+    @u_t_c[0].update_attributes(:receiver_id => params[:courierId])
+    @c_t_s[0].update_attributes(:sender_id => params[:courierId])
+    @s_t_c[0].update_attributes(:receiver_id => params[:courierId])
+    @c_t_u[0].update_attributes(:sender_id => params[:courierId])
     respond_to do |format|
-      if @orders.empty?
+      if @u_t_c.empty?
         format.json { render :json => {:data => "Get failed"}.to_json }
       else
-        format.json { render :json => {:data => @orders}.to_json }
+        format.json { render :json => {:data => "Succ"}.to_json }
       end
     end
   end
