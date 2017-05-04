@@ -21,14 +21,14 @@ class Order < ApplicationRecord
   end
 
 
-  def findFactory
+  def findStation
     @userAddress = Address.find_by_sql(["SELECT * FROM addresses WHERE id = ?;", self.address.id])
     lat1 = @userAddress[0].lat
     lng1 = @userAddress[0].lng
-    @addresses = Address.find_by_sql("SELECT * FROM addresses WHERE addressable_type = 'Factory';")
-    distance = -1;
-    factoryId = 1;
-    length = @addresses.length-1
+    @addresses = Address.find_by_sql("SELECT * FROM addresses WHERE addressable_type = 'Station';")
+    distance = -1
+    stationId = 1
+    length = @addresses.length - 1
     for i in 0..length do
       @address = @addresses[i]
       lat2 = @address.lat
@@ -41,21 +41,37 @@ class Order < ApplicationRecord
       result = Math.asin(first) * 2 * 6378137.0
       if distance < 0 or result < distance
         distance = result
-        factoryId = @address.addressable_id
+        stationId = @address.addressable_id
       end
     end
-    return factoryId
+
+    return stationId
     end
 
+  def findFactory
+    stationId = self.findStation
+    @factories = Factory.find_by_sql(["SELECT * FROM factories where id = (SELECT factory_id FROM factories_stations
+WHERE station_id = ?);", stationId])
+
+    return @factories[0].id
+  end
+
   def createWaybill
+    stationId = self.findStation
     factoryId = self.findFactory
     u_t_c = self.waybills.create(sender: self.user, receiver_type: 'Courier', exp_time: Time.now + 5.hours)
-    c_t_f = self.waybills.create(sender_type: 'Courier', receiver_type: 'Factory', receiver_id: factoryId)
-    f_t_c = self.waybills.create(sender_type: 'Factory', sender_id: factoryId, receiver_type: 'Courier')
+    c_t_s = self.waybills.create(sender_type: 'Courier', receiver_type: 'Station', receiver_id: stationId)
+    s_t_f = self.waybills.create(sender_type: 'Station', sender_id: stationId, receiver_type: 'Factory', receiver_id:
+        factoryId)
+    f_t_s = self.waybills.create(sender_type: 'Factory', sender_id: factoryId, receiver_type: 'Station', receiver_id:
+        stationId)
+    s_t_c = self.waybills.create(sender_type: 'Station', sender_id: stationId, receiver_type: 'Courier')
     c_t_u = self.waybills.create(sender_type: 'Courier', receiver: self.user)
-    u_t_c.waybill = c_t_f
-    c_t_f.waybill = f_t_c
-    f_t_c.waybill = c_t_u
+    u_t_c.waybill = c_t_s
+    c_t_s.waybill = s_t_f
+    s_t_f.waybill = f_t_s
+    f_t_s.waybill = s_t_c
+    s_t_c.waybill = c_t_u
     self.waybill = u_t_c
   end
 
