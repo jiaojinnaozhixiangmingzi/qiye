@@ -61,6 +61,19 @@ class ItemsController < ApplicationController
     end
   end
 
+  def createItem
+    @item = Item.new(create_item_params)
+    respond_to do |format|
+      if @item.save
+        format.html { redirect_to @item, notice: 'Item was successfully created.' }
+        format.json { render :json => {:data => @item}.to_json }
+      else
+        format.html { render :new }
+        format.json { render json: @item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
@@ -70,5 +83,9 @@ class ItemsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
       params.require(:item).permit(:amount, :price, :product_id, :order_id)
+      end
+
+    def create_item_params
+      params.permit(:amount, :price, :product_id, :order_id)
     end
 end

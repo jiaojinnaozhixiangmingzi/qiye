@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   resources :product_items
-  resources :items
+
+  resources :items do
+    collection do
+      post :createItem
+    end
+  end
+
   devise_for :workers
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
