@@ -69,9 +69,8 @@ class OrdersController < ApplicationController
     end
 
   def sendOrder
-    @orders = Order.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id = (SELECT id FROM
-addresses WHERE addressable_type = 'station' AND addressable_id = (SELECT station_id from couriers_stations where
-courier_id = ?))", params[:courierId]])
+    @orders = Order.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id in (SELECT factory_id FROM
+factories_stations WHERE station_id in (SELECT station_id from couriers_stations where courier_id = ?))", params[:courierId]])
     respond_to do |format|
       if @orders.empty?
         format.json { render :json => {:data => "Get failed"}.to_json }
@@ -89,7 +88,7 @@ courier_id = ?))", params[:courierId]])
         @wayBill = @order.createWaybill
         @order.update_attributes(:factory_id => factoryId)
         @order.update_attributes(:waybill_id => @wayBill.id)
-        format.json { render :json => {:order => @order}.to_json }
+        format.json { render :json => {:data => @order}.to_json }
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }
