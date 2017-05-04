@@ -85,7 +85,8 @@ courier_id = ?))", params[:courierId]])
     @order = Order.new(create_order_params)
     respond_to do |format|
       if @order.save
-        format.json { render :json => {:data => @order}.to_json }
+        @wayBill = @order.createWaybill
+        format.json { render :json => {:order => @order, :waybill => @wayBill}.to_json }
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }

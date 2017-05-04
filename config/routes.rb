@@ -52,7 +52,8 @@ Rails.application.routes.draw do
   end
   resources :cities
 
-  resources :orders do 
+  resources :orders do
+    resources :waybills
     member do 
       post :paidan
       end
