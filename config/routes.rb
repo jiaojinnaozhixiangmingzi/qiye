@@ -65,7 +65,7 @@ Rails.application.routes.draw do
 
   resources :waybills do
     collection do
-      post :createWaybill
+      post :fightWaybill
     end
   end
 end

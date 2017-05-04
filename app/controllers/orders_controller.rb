@@ -85,8 +85,11 @@ courier_id = ?))", params[:courierId]])
     @order = Order.new(create_order_params)
     respond_to do |format|
       if @order.save
+        factoryId = @order.findFactory
         @wayBill = @order.createWaybill
-        format.json { render :json => {:order => @order, :waybill => @wayBill}.to_json }
+        @order.update_attributes(:factory_id => factoryId)
+        @order.update_attributes(:waybill_id => @wayBill.id)
+        format.json { render :json => {:order => @order}.to_json }
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }

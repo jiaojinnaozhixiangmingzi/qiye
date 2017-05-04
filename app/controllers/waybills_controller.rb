@@ -61,9 +61,8 @@ class WaybillsController < ApplicationController
     end
   end
 
-  def createWaybill
-    @waybill = Waybill.new(waybill_params)
-    @orders = WayBill.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id = (SELECT id FROM
+  def fightWaybill
+    @waybill = WayBill.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id = (SELECT id FROM
 addresses WHERE addressable_type = 'station' AND addressable_id = (SELECT station_id from couriers_stations where
 courier_id = ?))", params[:courierId]])
     respond_to do |format|

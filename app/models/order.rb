@@ -1,3 +1,4 @@
+include Math
 class Order < ApplicationRecord
   belongs_to :category
   belongs_to :user
@@ -19,18 +20,43 @@ class Order < ApplicationRecord
     u_t_c.waybill = c_t_f
   end
 
-  def createWaybill
-    u_t_c = self.waybills.create(sender: self.user, receiver_type: 'Courier', exp_time: Time.now + 5.hours)
-    c_t_f = self.waybills.create(sender_type: 'Courier', receiver_type: 'Factory')
-    f_t_c = self.waybills.create(sender_type: 'Factory', receiver_type: 'Courier')
-    c_t_u = self.waybills.create(sender_type: 'Courier', receiver: self.user)
 
+  def findFactory
+    @userAddress = Address.find_by_sql(["SELECT * FROM addresses WHERE id = ?;", self.address.id])
+    lat1 = @userAddress[0].lat
+    lng1 = @userAddress[0].lng
+    @addresses = Address.find_by_sql("SELECT * FROM addresses WHERE addressable_type = 'Factory';")
+    distance = -1;
+    factoryId = 1;
+    length = @addresses.length-1
+    for i in 0..length do
+      @address = @addresses[i]
+      lat2 = @address.lat
+      lng2 = @address.lng
+      lat_diff = (lat1 - lat2)*PI/180.0
+      lng_diff = (lng1 - lng2)*PI/180.0
+      lat_sin = Math.sin(lat_diff/2.0) ** 2
+      lng_sin = Math.sin(lng_diff/2.0) ** 2
+      first = Math.sqrt(lat_sin + Math.cos(lat1*PI/180.0) * Math.cos(lat2*PI/180.0) * lng_sin)
+      result = Math.asin(first) * 2 * 6378137.0
+      if distance < 0 or result < distance
+        distance = result
+        factoryId = @address.addressable_id
+      end
+    end
+    return factoryId
+    end
+
+  def createWaybill
+    factoryId = self.findFactory
+    u_t_c = self.waybills.create(sender: self.user, receiver_type: 'Courier', exp_time: Time.now + 5.hours)
+    c_t_f = self.waybills.create(sender_type: 'Courier', receiver_type: 'Factory', receiver_id: factoryId)
+    f_t_c = self.waybills.create(sender_type: 'Factory', sender_id: factoryId, receiver_type: 'Courier')
+    c_t_u = self.waybills.create(sender_type: 'Courier', receiver: self.user)
     u_t_c.waybill = c_t_f
     c_t_f.waybill = f_t_c
     f_t_c.waybill = c_t_u
     self.waybill = u_t_c
-
-
   end
 
   def gen_product_items
