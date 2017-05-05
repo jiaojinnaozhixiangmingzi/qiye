@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   resources :addresses do 
     collection do 
       get :suggestion
+      post :createAddress
     end
   end
   resources :cities
