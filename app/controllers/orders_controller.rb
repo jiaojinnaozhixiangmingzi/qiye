@@ -98,7 +98,7 @@ factories_stations WHERE station_id in (SELECT station_id from couriers_stations
   end
 
   def getOrderByUser
-    @orders = Order.find_by_sql(["SELECT * FROM orders where user_id = ?", params[:userId]])
+    @orders = Order.find_by_sql(["SELECT * FROM orders where user_id = ? ORDER BY created_at desc", params[:userId]])
     respond_to do |format|
       if @orders.empty?
         format.json { render :json => {:data => "Get failed"}.to_json }
