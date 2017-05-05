@@ -66,6 +66,7 @@ Rails.application.routes.draw do
     collection do
       post :sendOrder
       post :createOrder
+      post :getOrderByUser
     end
   end
 

@@ -97,6 +97,17 @@ factories_stations WHERE station_id in (SELECT station_id from couriers_stations
     end
   end
 
+  def getOrderByUser
+    @orders = Order.find_by_sql(["SELECT * FROM orders where user_id = ?", params[:userId]])
+    respond_to do |format|
+      if @orders.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @orders}.to_json }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
