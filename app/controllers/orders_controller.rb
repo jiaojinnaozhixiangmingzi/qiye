@@ -86,9 +86,10 @@ factories_stations WHERE station_id in (SELECT station_id from couriers_stations
       if @order.save
         factoryId = @order.findFactory
         @wayBill = @order.createWaybill
+        address = @order.findAddress
         @order.update_attributes(:factory_id => factoryId)
         @order.update_attributes(:waybill_id => @wayBill.id)
-        format.json { render :json => {:data => @order}.to_json }
+        format.json { render :json => {:data => @order, :address => address}.to_json }
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }

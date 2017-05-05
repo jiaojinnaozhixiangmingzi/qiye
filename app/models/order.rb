@@ -46,7 +46,7 @@ class Order < ApplicationRecord
     end
 
     return stationId
-    end
+  end
 
   def findFactory
     stationId = self.findStation
@@ -54,6 +54,12 @@ class Order < ApplicationRecord
 WHERE station_id = ?);", stationId])
 
     return @factories[0].id
+  end
+
+  def findAddress
+    @userAddress = Address.find_by_sql(["SELECT * FROM addresses WHERE id = ?;", self.address.id])
+
+    return @userAddress[0].address
   end
 
   def createWaybill
