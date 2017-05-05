@@ -84,6 +84,18 @@ class AddressesController < ApplicationController
         format.json { render json: @address.errors, status: :unprocessable_entity }
       end
     end
+    end
+
+  def getAddressByUser
+    @address = Address.find_by_sql(["SELECT * FROM addresses WHERE addressable_type = 'User' and addressable_id = ?;
+", params[:userId]])
+    respond_to do |format|
+      if @address.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @address}.to_json }
+      end
+    end
   end
 
   private

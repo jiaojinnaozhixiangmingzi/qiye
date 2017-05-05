@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     collection do 
       get :suggestion
       post :createAddress
+      post :getAddressByUser
     end
   end
   resources :cities
