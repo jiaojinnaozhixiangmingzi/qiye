@@ -69,8 +69,9 @@ class OrdersController < ApplicationController
     end
 
   def sendOrder
-    @orders = Order.find_by_sql(["SELECT * FROM orders where status = '0' AND address_id in (SELECT factory_id FROM
-factories_stations WHERE station_id in (SELECT station_id from couriers_stations where courier_id = ?))", params[:courierId]])
+    @orders = Order.find_by_sql(["SELECT * FROM orders where status = '0' AND factory_id in (SELECT factory_id FROM
+factories_stations WHERE station_id in (SELECT station_id from couriers_stations where courier_id = ?)) ORDER BY
+created_at desc", params[:courierId]])
     respond_to do |format|
       if @orders.empty?
         format.json { render :json => {:data => "Get failed"}.to_json }
@@ -95,7 +96,7 @@ factories_stations WHERE station_id in (SELECT station_id from couriers_stations
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
-  end
+    end
 
   def getOrderByUser
     @orders = Order.find_by_sql(["SELECT * FROM orders where user_id = ? ORDER BY created_at desc", params[:userId]])

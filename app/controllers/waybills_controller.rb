@@ -74,6 +74,11 @@ class WaybillsController < ApplicationController
     @c_t_s[0].update_attributes(:sender_id => params[:courierId])
     @s_t_c[0].update_attributes(:receiver_id => params[:courierId])
     @c_t_u[0].update_attributes(:sender_id => params[:courierId])
+
+    @orders = Order.find_by_sql(["SELECT * FROM orders where id = ?", params[:orderId]])
+    @order = @orders[0]
+    @order.update_attributes(:status => 1)
+
     respond_to do |format|
       if @u_t_c.empty?
         format.json { render :json => {:data => "Get failed"}.to_json }
