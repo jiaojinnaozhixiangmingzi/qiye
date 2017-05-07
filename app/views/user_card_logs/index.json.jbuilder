@@ -1,0 +1,1 @@
+json.array! @user_card_logs, partial: 'user_card_logs/user_card_log', as: :user_card_log

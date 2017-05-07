@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong 类型:
+  = show_user_card_log_kind @user_card_log.kind
+p
+  strong 真钱:
+  = @user_card_log.real_money
+p
+  strong 假钱:
+  = @user_card_log.fake_money
+p
+  strong 操作角色:
+  = @user_card_log.loggable_type
+p
+  strong 操作角色ID:
+  = @user_card_log.loggable_id
+
+= link_to 'Edit', edit_user_card_log_path(@user_card_log)
+'|
+= link_to 'Back', user_card_logs_path

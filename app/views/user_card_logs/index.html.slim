@@ -1,0 +1,29 @@
+h1 Listing user_card_logs
+
+table
+  thead
+    tr
+      th Kind
+      th Real money
+      th Fake money
+      th Loggable type
+      th Loggable
+      th
+      th
+      th
+
+  tbody
+    - @user_card_logs.each do |user_card_log|
+      tr
+        td = user_card_log.kind
+        td = user_card_log.real_money
+        td = user_card_log.fake_money
+        td = user_card_log.loggable_type
+        td = user_card_log.loggable_id
+        td = link_to 'Show', user_card_log
+        td = link_to 'Edit', edit_user_card_log_path(user_card_log)
+        td = link_to 'Destroy', user_card_log, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New User card log', new_user_card_log_path

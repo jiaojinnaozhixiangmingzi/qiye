@@ -1,26 +1,26 @@
 p#notice = notice
 
 p
-  strong Category:
+  strong 品类:
   = @order.category.name
 p
-  strong Address:
+  strong 地址:
   = @order.address
 p
-  strong Total price:
+  strong 总价:
   = @order.total_price
 p
-  strong Status:
+  strong 订单状态:
   = @order.status
 p
-  strong Courier status:
-  = @order.courier_status
+  strong 物流状态:
+  = show_order_courier_status @order.courier_status
 p
-  strong Voucher status:
-  = @order.voucher_status
+  strong 支付状态:
+  = show_order_voucher_status @order.voucher_status
 p
-  strong Cleaning status:
-  = @order.cleaning_status
+  strong 清洗状态:
+  = show_order_cleaning_status @order.cleaning_status
 
 = link_to 'Edit', edit_order_path(@order)
 '|
@@ -35,29 +35,27 @@ p
         table.table.table-striped
           thead
             tr
-              th width='15%' 从
-              th width='15%' 到
+              th width='15%' 寄方类型
+              th width='15%' 寄方ID
+              th width='15%' 收方类型
+              th width='15%' 收方ID
               th width='15%' 状态
-              th width='15%' 期望执行
-              th width='15%' 实际执行
+              th width='10%' 期望执行
+              th width='10%' 实际执行
           tbody
             - @order.waybills.each do |waybill|
               tr
                 td
-                  - if waybill.sender_type == 'User' 
-                    = waybill.order.address
-                  - else
-                    = link_to waybill.sender.address
+                  = waybill.sender_type
                 td
-                  - if waybill.receiver_type == 'User' 
-                    = waybill.order.address
-                  - else
-                    = link_to waybill.receiver.address
+                  = waybill.sender_id
+                td
+                  = waybill.receiver_type
+                td
+                  = waybill.receiver_id
                 td
                   = show_waybill_status waybill.status
                 td
                   = date_time waybill.exp_time
                 td
                   = date_time waybill.actual_time
-      .panel-body
-        = link_to '派单', paidan_order_path(@order), method: :post, class: 'btn btn-info btn-sm'

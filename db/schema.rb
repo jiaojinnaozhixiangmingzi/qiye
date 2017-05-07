@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227091333) do
+ActiveRecord::Schema.define(version: 20170228144849) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "address"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 20170227091333) do
     t.boolean  "status",                 default: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.string   "address"
+    t.string   "range"
     t.index ["mobile"], name: "index_couriers_on_mobile", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_couriers_on_reset_password_token", unique: true, using: :btree
   end
@@ -215,6 +217,28 @@ ActiveRecord::Schema.define(version: 20170227091333) do
     t.index ["region_id"], name: "index_stations_on_region_id", using: :btree
   end
 
+  create_table "user_card_logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "kind",                     default: 0
+    t.float    "real_money",    limit: 24, default: 0.0
+    t.float    "fake_money",    limit: 24, default: 0.0
+    t.string   "loggable_type"
+    t.integer  "loggable_id"
+    t.integer  "user_card_id"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.index ["loggable_type", "loggable_id"], name: "index_user_card_logs_on_loggable_type_and_loggable_id", using: :btree
+    t.index ["user_card_id"], name: "index_user_card_logs_on_user_card_id", using: :btree
+  end
+
+  create_table "user_cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.float    "real_money", limit: 24, default: 0.0
+    t.float    "fake_money", limit: 24, default: 0.0
+    t.integer  "user_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["user_id"], name: "index_user_cards_on_user_id", using: :btree
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "mobile",                              null: false
     t.string   "email",                  default: ""
@@ -290,5 +314,6 @@ ActiveRecord::Schema.define(version: 20170227091333) do
   add_foreign_key "product_items", "orders"
   add_foreign_key "product_items", "products"
   add_foreign_key "products", "categories"
+  add_foreign_key "user_cards", "users"
   add_foreign_key "waybills", "orders"
 end

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :product_items
 
+
+  resources :user_card_logs
   resources :items do
     collection do
       post :createItem
@@ -17,7 +19,17 @@ Rails.application.routes.draw do
       post :login
     end
   end
-  resources :users
+  resources :users  do
+    resources :orders
+    resources :user_cards do
+      member do
+        get :charge
+        post :charge
+      end
+    end
+    resources :coupons
+  end
+
   resources :couriers
   resources :factories
 

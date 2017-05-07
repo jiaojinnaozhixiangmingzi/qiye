@@ -1,12 +1,73 @@
-h1 Show user
-p
-  strong 登陆账号:
-  = @user.mobile
-p
-  strong 姓名:
-  = @user.name
-p
-  strong email:
-  = @user.email
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading#operations
+        | 用户信息
+      .panel-body
+        table.table.table-striped
+          tr
+            td width='25%' 姓名:
+            td width='25%' = @user.name
+            td width='25%' 电话:
+            td width='25%' = @user.mobile
+          tr
+            td width='25%' 会员卡真钱:
+            td width='25%' = @user.user_card.real_money
+            td width='25%' 会员卡假钱:
+            td width='25%' = @user.user_card.fake_money
 
-= link_to 'Back', users_path
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        | 用户订单
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th 品类
+              th 地址
+              th 总价
+              th 订单状态
+              th 物流状态
+              th 支付状态
+              th 清洗状态
+              th
+
+          tbody
+            - @orders.each do |order|
+              tr
+                td = order.category.name
+                td = order.address
+                td = order.total_price
+                td = order.status
+                td = show_order_courier_status order.courier_status
+                td = show_order_voucher_status order.voucher_status
+                td = show_order_cleaning_status order.cleaning_status
+                td = link_to 'Show', order
+        = will_paginate @orders, renderer: BootstrapPagination::Rails, param_name: :order_page
+
+    .panel.panel-default
+      .panel-heading
+        | 会员卡记录
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th 真钱
+              th 假钱
+              th 类型
+              th 时间
+              th 记录详情
+
+          tbody
+            - @user_card_logs.each do |user_card_log|
+              tr
+                td = user_card_log.real_money
+                td = user_card_log.fake_money
+                td = show_user_card_log_kind user_card_log.kind
+                td = date_time user_card_log.created_at
+                td = link_to '详情', user_card_log
+        = will_paginate @user_card_logs, renderer: BootstrapPagination::Rails, param_name: :user_card_log_page
+      .panel-footer
+        = link_to '充值', charge_user_user_card_path(@user, @user.user_card), class: 'btn btn-info btn-sm'

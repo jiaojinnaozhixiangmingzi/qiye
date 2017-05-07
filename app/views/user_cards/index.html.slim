@@ -1,0 +1,25 @@
+h1 Listing user_cards
+
+table
+  thead
+    tr
+      th Real money
+      th Balance
+      th User
+      th
+      th
+      th
+
+  tbody
+    - @user_cards.each do |user_card|
+      tr
+        td = user_card.real_money
+        td = user_card.balance
+        td = user_card.user
+        td = link_to 'Show', user_card
+        td = link_to 'Edit', edit_user_card_path(user_card)
+        td = link_to 'Destroy', user_card, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New User card', new_user_card_path

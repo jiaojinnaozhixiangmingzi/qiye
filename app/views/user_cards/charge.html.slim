@@ -1,0 +1,7 @@
+= simple_form_for(@user_card_log, url: charge_user_user_card_path(@user, @user_card), method: :post) do |f|
+  .form-inputs
+    = f.input :real_money
+    = f.input :fake_money
+
+  .form-actions
+    = f.button :submit
