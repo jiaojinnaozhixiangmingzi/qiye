@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :product_items
-
+  resources :vouchers
 
   resources :user_card_logs
   resources :items do
@@ -76,11 +76,12 @@ Rails.application.routes.draw do
     resources :waybills
     member do 
       post :paidan
-      end
+    end
     collection do
       post :sendOrder
       post :createOrder
       post :getOrderByUser
+      post :pay
     end
   end
 

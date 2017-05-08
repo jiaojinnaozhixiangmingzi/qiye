@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :paidan]
+  before_action :set_order, only: [:show, :edit, :update, :destroy, :paidan, :pay]
 
   # GET /orders
   # GET /orders.json
@@ -58,6 +58,17 @@ class OrdersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def pay
+    respond_to do |format|
+      userCardLog = @order.pay_it
+      if userCardLog == nil
+        format.json { render :json => {:data => "Pay failed"}.to_json }
+      else
+        format.json { render :json => {:data => "Pay succ"}.to_json }
+      end
     end
   end
 

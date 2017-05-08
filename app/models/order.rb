@@ -11,6 +11,27 @@ class Order < ApplicationRecord
   has_many :items
   has_many :product_items
 
+  has_one :voucher
+  has_one :user_card_logs, as: :loggable
+
+  def pay_it
+    if self.voucher.money <= self.user.user_card.real_money + self.user.user_card.fake_money
+      if self.voucher.money <= self.user.user_card.real_money
+        @userCardLog = UserCardLog.create(kind: 2, real_money: self.voucher.money, fake_money: 0, user_card: self.user
+                                                                                                        .user_card, loggable: self)
+        self.user.user_card.update_attributes(real_money: self.user.user_card.real_money - self.voucher.money)
+      else
+        @userCardLog =  UserCardLog.create(kind: 2, real_money: self.user.user_card.real_money, fake_money: self.voucher.money - self
+                                                                                                                     .user.user_card.real_money, user_card: self.user.user_card, loggable: self)
+        self.user.user_card.update_attributes(real_money: 0, fake_money: self.user.user_card.real_money + self.user.user_card.fake_money - self.voucher.money)
+      end
+      self.update_attributes(voucher_status: 2)
+      self.voucher.update_attributes(status: 2, user_card_pay: self.voucher.money)
+    else
+      return @userCardLog
+    end
+  end
+
 
   def paidan
     u_t_c = self.waybills.create(sender: self.user, receiver: Courier.first, exp_time: Time.now + 2.hours, status: 1)

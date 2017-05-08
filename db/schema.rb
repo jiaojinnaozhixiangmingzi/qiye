@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228144849) do
+ActiveRecord::Schema.define(version: 20170421103109) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "address"
@@ -258,6 +258,18 @@ ActiveRecord::Schema.define(version: 20170228144849) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  create_table "vouchers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "order_id"
+    t.integer  "status",                              default: 0
+    t.datetime "payed_at"
+    t.float    "money",                    limit: 24
+    t.float    "user_card_pay",            limit: 24, default: 0.0
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.float    "user_card_fake_money_pay", limit: 24, default: 0.0
+    t.index ["order_id"], name: "index_vouchers_on_order_id", using: :btree
+  end
+
   create_table "waybills", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "status",        default: 0
     t.string   "sender_type"
@@ -315,5 +327,6 @@ ActiveRecord::Schema.define(version: 20170228144849) do
   add_foreign_key "product_items", "products"
   add_foreign_key "products", "categories"
   add_foreign_key "user_cards", "users"
+  add_foreign_key "vouchers", "orders"
   add_foreign_key "waybills", "orders"
 end
