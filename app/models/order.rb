@@ -27,6 +27,7 @@ class Order < ApplicationRecord
       end
       self.update_attributes(voucher_status: 2)
       self.voucher.update_attributes(status: 2, user_card_pay: self.voucher.money)
+      return @userCardLog
     else
       return @userCardLog
     end

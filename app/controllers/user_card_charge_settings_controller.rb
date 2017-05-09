@@ -1,5 +1,5 @@
 class UserCardChargeSettingsController < ApplicationController
-  before_action :set_user_card_charge_setting, only: [:show, :edit, :update, :destroy]
+  before_action :set_user_card_charge_setting, only: [:show, :edit, :update, :destroy, :pay]
 
   # GET /user_card_charge_settings
   # GET /user_card_charge_settings.json
@@ -58,6 +58,19 @@ class UserCardChargeSettingsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to user_card_charge_settings_url, notice: 'User card charge setting was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def pay
+    @users = User.find_by_sql(["SELECT * FROM users WHERE id = ?;", params[:userId]])
+    user = @users[0]
+    respond_to do |format|
+      userCardLog = user.user_card.charge(@user_card_charge_setting)
+      if userCardLog == nil
+        format.json { render :json => {:data => "Pay failed"}.to_json }
+      else
+          format.json { render :json => {:data => "Pay succ"}.to_json }
+      end
     end
   end
 
