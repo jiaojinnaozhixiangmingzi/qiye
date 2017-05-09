@@ -217,6 +217,15 @@ ActiveRecord::Schema.define(version: 20170421103109) do
     t.index ["region_id"], name: "index_stations_on_region_id", using: :btree
   end
 
+  create_table "user_card_charge_settings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.float    "min",        limit: 24, default: 0.0
+    t.float    "money_give", limit: 24, default: 0.0
+    t.integer  "city_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["city_id"], name: "index_user_card_charge_settings_on_city_id", using: :btree
+  end
+
   create_table "user_card_logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "kind",                     default: 0
     t.float    "real_money",    limit: 24, default: 0.0
@@ -326,6 +335,7 @@ ActiveRecord::Schema.define(version: 20170421103109) do
   add_foreign_key "product_items", "orders"
   add_foreign_key "product_items", "products"
   add_foreign_key "products", "categories"
+  add_foreign_key "user_card_charge_settings", "cities"
   add_foreign_key "user_cards", "users"
   add_foreign_key "vouchers", "orders"
   add_foreign_key "waybills", "orders"

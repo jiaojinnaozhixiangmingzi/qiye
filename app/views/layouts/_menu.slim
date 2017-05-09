@@ -47,6 +47,8 @@
                   = link_to "用户", users_path
                 li class="#{is_active?('orders', params[:controller])}"
                   = link_to "订单", orders_path
+                li class="#{is_active?('user_card_charge_settings', params[:controller])}"
+                  = link_to "充值优惠", user_card_charge_settings_path
 
         ul.nav.navbar-nav.ieCss.pull-right role="presentation"
           .dropdown

@@ -24,7 +24,7 @@ class UserCardChargeSettingsController < ApplicationController
   # POST /user_card_charge_settings
   # POST /user_card_charge_settings.json
   def create
-    @user_card_charge_setting = UserCardChargeSetting.new(user_card_charge_setting_params)
+    @user_card_charge_setting = UserCardChargeSetting.new(user_card_charge_setting_params.merge(city: current_city))
 
     respond_to do |format|
       if @user_card_charge_setting.save

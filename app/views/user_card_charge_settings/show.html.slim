@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong 充值金额:
+  = @user_card_charge_setting.min
+p
+  strong 赠送金额:
+  = @user_card_charge_setting.money_give
+p
+  strong 城市:
+  = @user_card_charge_setting.city.name
+
+= link_to 'Edit', edit_user_card_charge_setting_path(@user_card_charge_setting)
+'|
+= link_to 'Back', user_card_charge_settings_path

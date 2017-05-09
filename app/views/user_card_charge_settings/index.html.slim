@@ -1,0 +1,24 @@
+.panel.panel-default
+  .panel-heading
+    | 充值优惠
+  .panel-body
+    table.table.table-striped
+      thead
+        tr
+          th 充值金额
+          th 赠送金额
+          th
+          th
+          th
+
+      tbody
+        - @user_card_charge_settings.each do |user_card_charge_setting|
+          tr
+            td = user_card_charge_setting.min
+            td = user_card_charge_setting.money_give
+            td = link_to '详情', user_card_charge_setting
+            td = link_to '编辑', edit_user_card_charge_setting_path(user_card_charge_setting)
+            td = link_to '删除', user_card_charge_setting, data: { confirm: '确认删除?' }, method: :delete
+    = will_paginate @user_card_charge_settings, renderer: BootstrapPagination::Rails
+  .panel-footer
+    = link_to '新增', new_user_card_charge_setting_path, class: 'btn btn-info btn-sm'

@@ -1,0 +1,9 @@
+= simple_form_for(@user_card_charge_setting) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :min
+    = f.input :money_give
+
+  .form-actions
+    = f.button :submit

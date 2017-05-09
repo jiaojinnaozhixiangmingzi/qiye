@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :product_items
   resources :vouchers
+  resources :user_card_charge_settings
 
   resources :user_card_logs
   resources :items do
