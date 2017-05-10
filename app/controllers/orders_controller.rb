@@ -99,6 +99,8 @@ created_at desc", params[:courierId]])
         factoryId = @order.findFactory
         @wayBill = @order.createWaybill
         address = @order.findAddress
+        @voucher = @order.create_voucher
+        @voucher.update_attributes(:money => @order.total_price)
         @order.update_attributes(:factory_id => factoryId)
         @order.update_attributes(:waybill_id => @wayBill.id)
         format.json { render :json => {:data => @order, :address => address}.to_json }

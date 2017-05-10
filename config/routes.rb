@@ -8,9 +8,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :order_promotions
+  resources :promotion_rules
+  resources :coupon_lists
+
   resources :coupons
   resources :coupon_lists do
-    resources :order_promotions, only: [:new, :create, :edit, :update, :destroy]
+    resources :order_promotions, only: [:new, :create, :edit, :update, :destroy, :show]
     resources :promotion_rules
   end
 
