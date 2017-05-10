@@ -53,6 +53,9 @@ gem 'acts_as_tree', github: 'amerine/acts_as_tree'
 gem 'bootstrap-editable-rails'
 
 gem 'sidekiq'
+gem 'simple_form_bootstrap_datepicker'
+gem 'jquery-ui-rails'
+
 gem 'rack-cors', '~> 0.3.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

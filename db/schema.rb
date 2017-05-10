@@ -47,11 +47,43 @@ ActiveRecord::Schema.define(version: 20170421103109) do
     t.index ["region_id"], name: "index_cities_on_region_id", using: :btree
   end
 
+  create_table "cities_promotion_rules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "city_id"
+    t.integer  "promotion_rule_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["city_id"], name: "index_cities_promotion_rules_on_city_id", using: :btree
+    t.index ["promotion_rule_id"], name: "index_cities_promotion_rules_on_promotion_rule_id", using: :btree
+  end
+
   create_table "cities_workers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "city_id"
     t.integer "worker_id"
     t.index ["city_id"], name: "index_cities_workers_on_city_id", using: :btree
     t.index ["worker_id"], name: "index_cities_workers_on_worker_id", using: :btree
+  end
+
+  create_table "coupon_lists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string   "name"
+    t.integer  "validity_type"
+    t.date     "valid_from"
+    t.date     "valid_to"
+    t.integer  "fixed_begin_term"
+    t.integer  "fixed_term"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "coupons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "coupon_list_id"
+    t.integer  "user_id"
+    t.date     "valid_from"
+    t.date     "valid_to"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.boolean  "used",           default: false
+    t.index ["coupon_list_id"], name: "index_coupons_on_coupon_list_id", using: :btree
+    t.index ["user_id"], name: "index_coupons_on_user_id", using: :btree
   end
 
   create_table "couriers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -123,6 +155,16 @@ ActiveRecord::Schema.define(version: 20170421103109) do
     t.index ["product_id"], name: "index_items_on_product_id", using: :btree
   end
 
+  create_table "order_promotions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "kind"
+    t.float    "discount",       limit: 24
+    t.float    "premise",        limit: 24
+    t.integer  "coupon_list_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["coupon_list_id"], name: "index_order_promotions_on_coupon_list_id", using: :btree
+  end
+
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "category_id"
     t.integer  "user_id"
@@ -186,6 +228,15 @@ ActiveRecord::Schema.define(version: 20170421103109) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.index ["category_id"], name: "index_products_on_category_id", using: :btree
+  end
+
+  create_table "promotion_rules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "coupon_list_id"
+    t.date     "start_on"
+    t.date     "end_on"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["coupon_list_id"], name: "index_promotion_rules_on_coupon_list_id", using: :btree
   end
 
   create_table "regions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -276,6 +327,9 @@ ActiveRecord::Schema.define(version: 20170421103109) do
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
     t.float    "user_card_fake_money_pay", limit: 24, default: 0.0
+    t.float    "coupon_pay",               limit: 24, default: 0.0
+    t.integer  "coupon_id"
+    t.index ["coupon_id"], name: "index_vouchers_on_coupon_id", using: :btree
     t.index ["order_id"], name: "index_vouchers_on_order_id", using: :btree
   end
 
@@ -324,6 +378,8 @@ ActiveRecord::Schema.define(version: 20170421103109) do
   add_foreign_key "categories_cities", "categories"
   add_foreign_key "categories_cities", "cities"
   add_foreign_key "cities", "regions"
+  add_foreign_key "coupons", "coupon_lists"
+  add_foreign_key "coupons", "users"
   add_foreign_key "items", "orders"
   add_foreign_key "items", "products"
   add_foreign_key "orders", "addresses"
@@ -335,6 +391,7 @@ ActiveRecord::Schema.define(version: 20170421103109) do
   add_foreign_key "product_items", "orders"
   add_foreign_key "product_items", "products"
   add_foreign_key "products", "categories"
+  add_foreign_key "promotion_rules", "coupon_lists"
   add_foreign_key "user_card_charge_settings", "cities"
   add_foreign_key "user_cards", "users"
   add_foreign_key "vouchers", "orders"

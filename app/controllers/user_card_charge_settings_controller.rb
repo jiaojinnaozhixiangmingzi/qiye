@@ -1,5 +1,5 @@
 class UserCardChargeSettingsController < ApplicationController
-  before_action :set_user_card_charge_setting, only: [:show, :edit, :update, :destroy, :pay]
+  before_action only: [:show, :edit, :update, :destroy, :pay]
 
   # GET /user_card_charge_settings
   # GET /user_card_charge_settings.json
@@ -64,8 +64,11 @@ class UserCardChargeSettingsController < ApplicationController
   def pay
     @users = User.find_by_sql(["SELECT * FROM users WHERE id = ?;", params[:userId]])
     user = @users[0]
+    @user_card_charge_settings = UserCardChargeSetting.find_by_sql(["SELECT * FROM user_card_charge_settings WHERE
+city_id = ? AND min <= ? ORDER BY min DESC LIMIT 1;", params[:cityId], params[:money]])
+    @user_card_charge_setting = @user_card_charge_settings[0]
     respond_to do |format|
-      userCardLog = user.user_card.charge(@user_card_charge_setting)
+      userCardLog = user.user_card.charge(@user_card_charge_setting, params[:money].to_f)
       if userCardLog == nil
         format.json { render :json => {:data => "Pay failed"}.to_json }
       else
