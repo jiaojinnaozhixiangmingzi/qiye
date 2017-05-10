@@ -1,0 +1,25 @@
+h1 Listing promotion_rules
+
+table
+  thead
+    tr
+      th Coupon list
+      th Start on
+      th End on
+      th
+      th
+      th
+
+  tbody
+    - @promotion_rules.each do |promotion_rule|
+      tr
+        td = promotion_rule.coupon_list
+        td = promotion_rule.start_on
+        td = promotion_rule.end_on
+        td = link_to 'Show', promotion_rule
+        td = link_to 'Edit', edit_promotion_rule_path(promotion_rule)
+        td = link_to 'Destroy', promotion_rule, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Promotion rule', new_promotion_rule_path

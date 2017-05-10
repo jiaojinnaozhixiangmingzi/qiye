@@ -1,0 +1,8 @@
+= simple_form_for([@user, @coupon]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.association :coupon_list, collection: CouponList.can_be_assigns
+
+  .form-actions
+    = f.button :submit

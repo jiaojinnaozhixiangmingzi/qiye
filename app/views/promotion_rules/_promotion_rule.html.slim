@@ -1,0 +1,7 @@
+tr
+  td
+    = promotion_rule.cities.map(&:name).join(',') 
+  td = promotion_rule.start_on
+  td = promotion_rule.end_on
+  td = link_to 'Edit', edit_coupon_list_promotion_rule_path(@coupon_list, promotion_rule)
+  td = link_to 'Destroy', coupon_list_promotion_rule_path(@coupon_list, promotion_rule), data: { confirm: 'Are you sure?' }, method: :delete

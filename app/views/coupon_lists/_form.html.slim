@@ -1,0 +1,43 @@
+= simple_form_for(@coupon_list) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :validity_type, collection: [['绝对有效期', 0], ['相对有效期', 1]], include_blank: false
+    = f.input :valid_from, as: :date_picker
+    = f.input :valid_to, as: :date_picker
+    = f.input :fixed_begin_term
+    = f.input :fixed_term
+
+  .form-actions
+    = f.button :submit
+
+javascript:
+  $(function(){
+    $("input.datepicker").each(function(input) {
+      $(this).datepicker({
+        dateFormat: "yy-mm-dd",
+        altField: $(this).next()
+      })
+    })
+
+    $('#coupon_list_validity_type').change(function(){
+      reset_text()
+    })
+    reset_text()
+  })
+
+  function reset_text(){
+    var kind = $('#coupon_list_validity_type').val();
+    if(kind == 0){
+      $('.coupon_list_valid_from').show();
+      $('.coupon_list_valid_to').show();
+      $('.coupon_list_fixed_begin_term').hide();
+      $('.coupon_list_fixed_term').hide();
+    }else{
+      $('.coupon_list_valid_from').hide();
+      $('.coupon_list_valid_to').hide();
+      $('.coupon_list_fixed_begin_term').show();
+      $('.coupon_list_fixed_term').show();
+    }
+  }

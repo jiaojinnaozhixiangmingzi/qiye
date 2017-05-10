@@ -1,0 +1,6 @@
+tr
+  td = link_to coupon_list.name, coupon_list
+  td = show_coupon_list_valid_type coupon_list.validity_type
+  td = show_coupon_list_valid coupon_list
+  td = link_to 'Edit', edit_coupon_list_path(coupon_list)
+  td = link_to 'Destroy', coupon_list, data: { confirm: 'Are you sure?' }, method: :delete

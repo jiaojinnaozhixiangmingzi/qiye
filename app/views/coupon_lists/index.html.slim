@@ -1,0 +1,19 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading#places
+        | 优惠券
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th width='15%' 名称
+              th width='15%' 有效期类型
+              th width='25%' 优惠券有效期
+              th width='15%'
+              th width='15%'
+          tbody
+            = render @coupon_lists
+        = will_paginate @coupon_lists, renderer: BootstrapPagination::Rails
+      .panel-footer
+        = link_to '新建优惠券', new_coupon_list_path, class: 'btn btn-info btn-sm'

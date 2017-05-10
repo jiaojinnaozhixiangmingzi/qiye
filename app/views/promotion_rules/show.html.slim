@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Coupon list:
+  = @promotion_rule.coupon_list
+p
+  strong Start on:
+  = @promotion_rule.start_on
+p
+  strong End on:
+  = @promotion_rule.end_on
+
+= link_to 'Edit', edit_promotion_rule_path(@promotion_rule)
+'|
+= link_to 'Back', promotion_rules_path
