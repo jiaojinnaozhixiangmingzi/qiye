@@ -1,5 +1,5 @@
 ol.breadcrumb
-  li.active 
+  li.active
     = link_to '优惠券', coupon_lists_path
   li
     = @coupon_list.name
@@ -8,7 +8,7 @@ ol.breadcrumb
 br
 
 = render partial: 'block', locals: { coupon_list: @coupon_list}
-  
+
 .clear
 br
 
@@ -29,6 +29,38 @@ br
             = render @coupon_list.order_promotions
       .panel-footer
         = link_to '新增', new_coupon_list_order_promotion_path(@coupon_list), class: 'btn btn-info btn-sm'
+
+      .panel.panel-default
+      .panel-heading
+        | 品类优惠
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th width='15%' 类型
+              th width='25%' 优惠内容
+              th width='15%'
+              th width='15%'
+          tbody
+            = render @coupon_list.category_promotions
+      .panel-footer
+        = link_to '新增', new_coupon_list_category_promotion_path(@coupon_list), class: 'btn btn-info btn-sm'
+
+      .panel.panel-default
+      .panel-heading
+        | 用户优惠
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th width='15%' 类型
+              th width='25%' 优惠内容
+              th width='15%'
+              th width='15%'
+          tbody
+            = render @coupon_list.user_promotions
+      .panel-footer
+        = link_to '新增', new_coupon_list_user_promotion_path(@coupon_list), class: 'btn btn-info btn-sm'
 
     .panel.panel-default
       .panel-heading

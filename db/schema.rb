@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170421103109) do
+ActiveRecord::Schema.define(version: 20170510084121) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "address"
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(version: 20170421103109) do
     t.integer "category_id"
     t.index ["category_id"], name: "index_categories_cities_on_category_id", using: :btree
     t.index ["city_id"], name: "index_categories_cities_on_city_id", using: :btree
+  end
+
+  create_table "category_promotions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "kind"
+    t.float    "discount",       limit: 24
+    t.float    "premise",        limit: 24
+    t.integer  "coupon_list_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["coupon_list_id"], name: "index_category_promotions_on_coupon_list_id", using: :btree
   end
 
   create_table "cities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -297,6 +307,16 @@ ActiveRecord::Schema.define(version: 20170421103109) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.index ["user_id"], name: "index_user_cards_on_user_id", using: :btree
+  end
+
+  create_table "user_promotions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "kind"
+    t.float    "discount",       limit: 24
+    t.float    "premise",        limit: 24
+    t.integer  "coupon_list_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["coupon_list_id"], name: "index_user_promotions_on_coupon_list_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

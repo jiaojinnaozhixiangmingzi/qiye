@@ -37,7 +37,7 @@ class OrderPromotionsController < ApplicationController
 
   private
   def set_coupon_list
-    @coupon_list = CouponList.find(2)
+    @coupon_list = CouponList.find(params[:coupon_list_id])
   end
   
   def resource_params

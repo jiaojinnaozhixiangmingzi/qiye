@@ -1,0 +1,5 @@
+tr
+  td = show_category_promotion_kind(category_promotion)
+  td = show_category_promotion_content(category_promotion)
+  td = link_to 'Edit', edit_coupon_list_category_promotion_path(category_promotion.coupon_list, category_promotion)
+  td = link_to 'Destroy', coupon_list_category_promotion_path(category_promotion.coupon_list, category_promotion), data: { confirm: 'Are you sure?' }, method: :delete

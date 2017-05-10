@@ -61,6 +61,21 @@ class CouponListsController < ApplicationController
     end
   end
 
+  def getList
+    @OrderPromotion = OrderPromotion.find_by_sql(["SELECT * FROM order_promotions where coupon_list_id IN (SELECT id
+FROM coupon_lists WHERE id IN (SELECT coupon_list_id FROM promotion_rules WHERE start_on <= NOW() AND end_on >= NOW()
+ AND id IN (SELECT promotion_rule_id from cities_promotion_rules WHERE city_id = ?)) AND ((validity_type = 0 AND
+valid_from <= NOW() AND valid_to >= NOW()) OR validity_type = 1))", params[:cityId]])
+    @CategoryPromotion = CategoryPromotion.find_by_sql(["SELECT * FROM category_promotions where coupon_list_id IN
+(SELECT id FROM coupon_lists WHERE id IN (SELECT coupon_list_id FROM promotion_rules WHERE start_on <= NOW() AND
+end_on >= NOW() AND id IN (SELECT promotion_rule_id from cities_promotion_rules WHERE city_id = ?)) AND (
+(validity_type = 0 AND valid_from <= NOW() AND valid_to >= NOW()) OR validity_type = 1))", params[:cityId]])
+    respond_to do |format|
+      format.json { render :json => {:orderPromotion => @OrderPromotion, :categoryPromotion => @CategoryPromotion}
+                                        .to_json }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_coupon_list

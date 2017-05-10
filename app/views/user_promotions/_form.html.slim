@@ -1,0 +1,29 @@
+= simple_form_for([@coupon_list, @user_promotion]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :kind, collection: [['新用户优惠', 0],['老用户优惠', 1], include_blank: false
+    = f.input :premise, label_html: {id: 'premise_label'}
+    = f.input :discount, label_html: {id: 'discount_label'}
+
+  .form-actions
+    = f.button :submit
+
+javascript:
+  $(function(){
+    $('#user_promotion_kind').change(function(){
+      reset_text()
+    })
+    reset_text()
+  })
+
+  function reset_text(){
+    var kind = $('#user_promotion_kind').val();
+    if(kind == 0){
+      $('#premise_label').text('新用户满');
+      $('#discount_label').text('减');
+    }else if(kind == 1){
+      $('#premise_label').text('老用户满');
+      $('#discount_label').text('减');
+    }
+  }

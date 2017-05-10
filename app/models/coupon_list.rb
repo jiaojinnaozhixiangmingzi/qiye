@@ -1,5 +1,7 @@
 class CouponList < ApplicationRecord
   has_many :order_promotions
+  has_many :user_promotions
+  has_many :category_promotions
   has_many :promotion_rules
 
   def self.can_be_assigns

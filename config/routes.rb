@@ -9,12 +9,19 @@ Rails.application.routes.draw do
   end
 
   resources :order_promotions
+  resources :user_promotions
+  resources :category_promotions
   resources :promotion_rules
   resources :coupon_lists
 
   resources :coupons
   resources :coupon_lists do
+    collection do
+      post :getList
+    end
     resources :order_promotions, only: [:new, :create, :edit, :update, :destroy, :show]
+    resources :user_promotions, only: [:new, :create, :edit, :update, :destroy, :show]
+    resources :category_promotions, only: [:new, :create, :edit, :update, :destroy, :show]
     resources :promotion_rules
   end
 

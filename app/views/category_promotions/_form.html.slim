@@ -1,0 +1,27 @@
+= simple_form_for([@coupon_list, @user_promotion]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :kind, collection: [['衬衫', 0],['夹克', 1], include_blank: false
+    = f.input :premise, label_html: {id: 'premise_label'}
+    = f.input :discount, label_html: {id: 'discount_label'}
+
+  .form-actions
+    = f.button :submit
+
+javascript:
+  $(function(){
+    $('#category_promotion_kind').change(function(){
+      reset_text()
+    })
+    reset_text()
+  })
+
+  function reset_text(){
+    var kind = $('#category_promotion_kind').val();
+    if(kind == 0){
+      $('#discount_label').text('%折扣价');
+    }else if(kind == 1){
+      $('#discount_label').text('%折扣价');
+    }
+  }
