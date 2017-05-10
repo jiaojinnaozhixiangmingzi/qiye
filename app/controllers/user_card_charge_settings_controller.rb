@@ -72,6 +72,18 @@ class UserCardChargeSettingsController < ApplicationController
           format.json { render :json => {:data => "Pay succ"}.to_json }
       end
     end
+    end
+
+  def getList
+    @user_card_charge_settings = UserCardChargeSetting.find_by_sql(["SELECT * FROM user_card_charge_settings WHERE city_id = ?;",
+                                                params[:cityId]])
+    respond_to do |format|
+      if @user_card_charge_settings.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @user_card_charge_settings}.to_json }
+      end
+    end
   end
 
   private

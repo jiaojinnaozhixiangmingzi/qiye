@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :user_card_charge_settings do
     collection do
       post :pay
+      post :getList
     end
   end
 
