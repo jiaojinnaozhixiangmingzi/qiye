@@ -18,6 +18,12 @@ Rails.application.routes.draw do
     collection do
       post :getList
     end
+    end
+
+  resources :user_cards do
+    collection do
+      post :getUserCard
+    end
   end
   resources :items do
     collection do

@@ -62,6 +62,18 @@ class UserCardsController < ApplicationController
     end
   end
 
+  def getUserCard
+    @user_cards = UserCard.find_by_sql(["SELECT * FROM user_cards WHERE user_id = ? LIMIT 1;", params[:userId]])
+    userCard = @user_cards[0]
+    respond_to do |format|
+      if @user_cards.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => userCard}.to_json }
+      end
+    end
+  end
+
   def charge
     if request.post?
       @user_card_log = UserCardLog.new(user_card_log_params.merge(kind: 1, loggable: current_worker, user_card: @user.user_card))
