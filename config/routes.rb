@@ -8,8 +8,17 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :coupons
+  resources :coupon_lists do
+    resources :order_promotions, only: [:new, :create, :edit, :update, :destroy]
+    resources :promotion_rules
+  end
 
-  resources :user_card_logs
+  resources :user_card_logs do
+    collection do
+      post :getList
+    end
+  end
   resources :items do
     collection do
       post :createItem

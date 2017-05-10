@@ -78,8 +78,8 @@ city_id = ? AND min <= ? ORDER BY min DESC LIMIT 1;", params[:cityId], params[:m
     end
 
   def getList
-    @user_card_charge_settings = UserCardChargeSetting.find_by_sql(["SELECT * FROM user_card_charge_settings WHERE city_id = ?;",
-                                                params[:cityId]])
+    @user_card_charge_settings = UserCardChargeSetting.find_by_sql(["SELECT * FROM user_card_charge_settings WHERE
+city_id = ? ORDER BY min;", params[:cityId]])
     respond_to do |format|
       if @user_card_charge_settings.empty?
         format.json { render :json => {:data => "Get failed"}.to_json }

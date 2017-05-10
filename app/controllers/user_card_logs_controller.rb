@@ -61,6 +61,18 @@ class UserCardLogsController < ApplicationController
     end
   end
 
+  def getList
+    @user_card_logs = UserCardChargeSetting.find_by_sql(["SELECT * FROM user_card_logs WHERE kind = 3 AND
+user_card_id = (SELECT id FROM user_cards WHERE user_id = ? LIMIT 1) ORDER BY created_at DESC;", params[:userId]])
+    respond_to do |format|
+      if @user_card_logs.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @user_card_logs}.to_json }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_card_log

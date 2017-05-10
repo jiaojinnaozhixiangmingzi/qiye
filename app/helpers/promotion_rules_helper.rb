@@ -1,0 +1,2 @@
+module PromotionRulesHelper
+end
