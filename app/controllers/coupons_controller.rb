@@ -22,6 +22,23 @@ class CouponsController < ApplicationController
     end
   end
 
+  def createCoupon
+    @CouponLists = CouponList.find_by_sql(["SELECT * FROM coupon_lists WHERE id = ?;", params[:couponListId]])
+    @CouponList = @CouponLists[0]
+    @Coupon = Coupon.create(coupon_list_id: @CouponList.id, user_id: params[:userId], valid_from: @CouponList
+                                                                                                      .valid_from,
+                            valid_to: @CouponList.valid_to, used: 0)
+    respond_to do |format|
+      if @Coupon.save
+        format.html { redirect_to @Coupon, notice: 'Item was successfully created.' }
+        format.json { render :json => {:data => @Coupon}.to_json }
+      else
+        format.html { render :new }
+        format.json { render json: @Coupon.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
   def set_user
     @user = User.find(params[:user_id])

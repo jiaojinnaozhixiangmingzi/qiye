@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   resources :promotion_rules
   resources :coupon_lists
 
-  resources :coupons
+  resources :coupons do
+    collection do
+      post :createCoupon
+    end
+  end
   resources :coupon_lists do
     collection do
       post :getList
