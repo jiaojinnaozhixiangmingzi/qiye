@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   resources :coupons do
     collection do
       post :createCoupon
+      post :getUsedCoupon
+      post :getUnusedCoupon
+      post :getInvalidCoupon
     end
   end
   resources :coupon_lists do

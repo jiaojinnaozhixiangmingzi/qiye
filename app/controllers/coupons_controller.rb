@@ -39,6 +39,30 @@ class CouponsController < ApplicationController
     end
   end
 
+  def getUsedCoupon
+    @Coupons = Coupon.find_by_sql(["SELECT * FROM coupons WHERE used = 1 and user_id = ?;", params[:userId]])
+    respond_to do |format|
+      format.json { render :json => {:data => @Coupons}.to_json }
+    end
+  end
+
+  def getUnusedCoupon
+    @Coupons = Coupon.find_by_sql(["SELECT * FROM coupons WHERE used = 0 and valid_to >= NOW() and user_id = ?;",
+                                   params[:userId]])
+    respond_to do |format|
+      format.json { render :json => {:data => @Coupons}.to_json }
+    end
+  end
+
+  def getInvalidCoupon
+    @Coupons = Coupon.find_by_sql(["SELECT * FROM coupons WHERE used = 0 and valid_to < NOW() and user_id = ?;",
+                                   params[:userId]])
+    respond_to do |format|
+      format.json { render :json => {:data => @Coupons}.to_json }
+    end
+  end
+
+
   private
   def set_user
     @user = User.find(params[:user_id])
