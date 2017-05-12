@@ -64,6 +64,10 @@ class OrdersController < ApplicationController
   def pay
     respond_to do |format|
       userCardLog = @order.pay_it
+      @Coupons = Coupon.find_by_sql(["SELECT * FROM coupons WHERE coupon_list_id = ? and user_id = ?;",
+                                     params[:couponListId], params[:userId]])
+      @Coupon = @Coupons[0]
+      @Coupon.update_attributes(:used => 1)
       if userCardLog == nil
         format.json { render :json => {:data => "Pay failed"}.to_json }
       else
