@@ -1,7 +1,12 @@
 class PromotionRulesController < ApplicationController
   before_action :set_coupon_list, only: [:new, :edit, :create, :update, :destroy, :show]
   # load_and_authorize_resource
-  
+
+
+  def new
+    @promotion_rule = PromotionRule.new
+  end
+
   def create
     @promotion_rule = @coupon_list.promotion_rules.create(resource_params)
     respond_to do |format|

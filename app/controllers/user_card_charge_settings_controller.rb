@@ -68,7 +68,7 @@ class UserCardChargeSettingsController < ApplicationController
 city_id = ? AND min <= ? ORDER BY min DESC LIMIT 1;", params[:cityId], params[:money]])
     @user_card_charge_setting = @user_card_charge_settings[0]
     respond_to do |format|
-      userCardLog = user.user_card.charge(@user_card_charge_setting, params[:money].to_f)
+      userCardLog = user.user_card.charge1(@user_card_charge_setting, params[:money].to_f)
       if userCardLog == nil
         format.json { render :json => {:data => "Pay failed"}.to_json }
       else

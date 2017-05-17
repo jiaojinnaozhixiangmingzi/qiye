@@ -2,6 +2,10 @@ class OrderPromotionsController < ApplicationController
   before_action :set_coupon_list, only: [:new, :edit, :create, :update, :destroy, :show]
   # load_and_authorize_resource
 
+  def new
+    @order_promotion = OrderPromotion.new
+  end
+
   def create
     @order_promotion = @coupon_list.order_promotions.create(resource_params)
     respond_to do |format|
