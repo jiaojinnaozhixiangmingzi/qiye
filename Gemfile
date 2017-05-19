@@ -59,6 +59,7 @@ gem 'jquery-ui-rails'
 gem 'axlsx'
 gem 'axlsx_rails'
 gem 'roo'
+gem 'mina'
 
 gem 'rack-cors', '~> 0.3.1'
 group :development, :test do
