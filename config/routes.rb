@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+
+  resources :settlement_rules do
+    resources :settlement_prices
+    member do
+      put :refresh_products
+      get :download
+      get :upload
+      post :upload
+    end
+  end
+
   resources :product_items
   resources :vouchers
   resources :user_card_charge_settings do
@@ -71,7 +82,12 @@ Rails.application.routes.draw do
   end
 
   resources :couriers
-  resources :factories
+  resources :factories do
+    resources :factory_settlement_rules
+    member do
+      get :settlement_detail
+    end
+  end
 
   resources :roles
 

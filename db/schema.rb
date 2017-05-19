@@ -154,6 +154,41 @@ ActiveRecord::Schema.define(version: 20170510084121) do
     t.index ["station_id"], name: "index_factories_stations_on_station_id", using: :btree
   end
 
+  create_table "factory_process_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer "factory_id"
+    t.integer "category_id"
+    t.integer "product_id"
+    t.date    "process_on"
+    t.integer "amount",      default: 0
+    t.index ["category_id"], name: "index_factory_process_records_on_category_id", using: :btree
+    t.index ["factory_id"], name: "index_factory_process_records_on_factory_id", using: :btree
+    t.index ["product_id"], name: "index_factory_process_records_on_product_id", using: :btree
+  end
+
+  create_table "factory_settlement_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer "factory_id"
+    t.integer "category_id"
+    t.integer "product_id"
+    t.date    "settlement_on"
+    t.integer "amount",                   default: 0
+    t.float   "price",         limit: 24, default: 0.0
+    t.float   "money",         limit: 24, default: 0.0
+    t.index ["category_id"], name: "index_factory_settlement_records_on_category_id", using: :btree
+    t.index ["factory_id"], name: "index_factory_settlement_records_on_factory_id", using: :btree
+    t.index ["product_id"], name: "index_factory_settlement_records_on_product_id", using: :btree
+  end
+
+  create_table "factory_settlement_rules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.date     "from_date"
+    t.integer  "priority",           default: 0
+    t.integer  "factory_id"
+    t.integer  "settlement_rule_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.index ["factory_id"], name: "index_factory_settlement_rules_on_factory_id", using: :btree
+    t.index ["settlement_rule_id"], name: "index_factory_settlement_rules_on_settlement_rule_id", using: :btree
+  end
+
   create_table "items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "amount"
     t.float    "price",      limit: 24
@@ -268,6 +303,27 @@ ActiveRecord::Schema.define(version: 20170510084121) do
     t.string   "comment"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
+  end
+
+  create_table "settlement_prices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "settlement_rule_id"
+    t.integer  "product_id"
+    t.float    "price",              limit: 24, default: 0.0
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.index ["product_id"], name: "index_settlement_prices_on_product_id", using: :btree
+    t.index ["settlement_rule_id"], name: "index_settlement_prices_on_settlement_rule_id", using: :btree
+  end
+
+  create_table "settlement_rules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "category_id"
+    t.integer  "city_id"
+    t.string   "name"
+    t.string   "comment"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["category_id"], name: "index_settlement_rules_on_category_id", using: :btree
+    t.index ["city_id"], name: "index_settlement_rules_on_city_id", using: :btree
   end
 
   create_table "stations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -400,6 +456,14 @@ ActiveRecord::Schema.define(version: 20170510084121) do
   add_foreign_key "cities", "regions"
   add_foreign_key "coupons", "coupon_lists"
   add_foreign_key "coupons", "users"
+  add_foreign_key "factory_process_records", "categories"
+  add_foreign_key "factory_process_records", "factories"
+  add_foreign_key "factory_process_records", "products"
+  add_foreign_key "factory_settlement_records", "categories"
+  add_foreign_key "factory_settlement_records", "factories"
+  add_foreign_key "factory_settlement_records", "products"
+  add_foreign_key "factory_settlement_rules", "factories"
+  add_foreign_key "factory_settlement_rules", "settlement_rules"
   add_foreign_key "items", "orders"
   add_foreign_key "items", "products"
   add_foreign_key "orders", "addresses"
@@ -412,6 +476,10 @@ ActiveRecord::Schema.define(version: 20170510084121) do
   add_foreign_key "product_items", "products"
   add_foreign_key "products", "categories"
   add_foreign_key "promotion_rules", "coupon_lists"
+  add_foreign_key "settlement_prices", "products"
+  add_foreign_key "settlement_prices", "settlement_rules"
+  add_foreign_key "settlement_rules", "categories"
+  add_foreign_key "settlement_rules", "cities"
   add_foreign_key "user_card_charge_settings", "cities"
   add_foreign_key "user_cards", "users"
   add_foreign_key "vouchers", "orders"

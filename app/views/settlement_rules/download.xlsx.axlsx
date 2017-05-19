@@ -1,0 +1,9 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: @settlement_rule.category.name) do |sheet|
+  sheet.add_row %w(商品ID 名称 价格)
+
+  @settlement_rule.settlement_prices.each do |s_p|
+    sheet.add_row [s_p.product.id, s_p.product.name, s_p.price], types: [:integer, :string, :float]
+ end
+end

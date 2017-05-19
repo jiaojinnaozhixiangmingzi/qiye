@@ -1,0 +1,27 @@
+h1 Listing factory_settlement_rules
+
+table
+  thead
+    tr
+      th From date
+      th Priority
+      th Factory
+      th Settlement rule
+      th
+      th
+      th
+
+  tbody
+    - @factory_settlement_rules.each do |factory_settlement_rule|
+      tr
+        td = factory_settlement_rule.from_date
+        td = factory_settlement_rule.priority
+        td = factory_settlement_rule.factory
+        td = factory_settlement_rule.settlement_rule
+        td = link_to 'Show', factory_settlement_rule
+        td = link_to 'Edit', edit_factory_settlement_rule_path(factory_settlement_rule)
+        td = link_to 'Destroy', factory_settlement_rule, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Factory settlement rule', new_factory_settlement_rule_path

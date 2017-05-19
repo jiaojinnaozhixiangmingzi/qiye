@@ -1,0 +1,10 @@
+= simple_form_for(@settlement_rule) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :comment
+    = f.association :category, collection: current_city.categories
+
+  .form-actions
+    = f.button :submit

@@ -27,7 +27,41 @@
                 td 
                   = link_to station.name, station
 
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading#operations
+        | 结算规则
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th width='15%' 名字
+              th width='15%' 启用日期
+              th width='15%' 优先级
+          tbody
+            - @factory_settlement_rules.each do |factory_settlement_rule|
+              tr
+                td = link_to factory_settlement_rule.settlement_rule.name, factory_settlement_rule.settlement_rule
+                td = factory_settlement_rule.from_date
+                td = factory_settlement_rule.priority
+      .panel-footer
+        = link_to '新建规则', new_factory_factory_settlement_rule_path(@factory), class: 'btn btn-info btn-sm'
 
-= link_to 'Edit', edit_factory_path(@factory)
-'|
-= link_to 'Back', factories_path
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading#operations
+        | 结算记录
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th width='35%' 日期
+              th width='15%' 金额
+          tbody
+            - @factory_settlement_records.each do |settlement_on, money|
+              tr
+                td = link_to settlement_on, settlement_detail_factory_path(@factory, settlement_on: settlement_on)
+                td = money.round(2)

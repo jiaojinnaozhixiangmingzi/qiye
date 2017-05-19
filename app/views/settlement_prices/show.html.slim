@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Settlement rule:
+  = @settlement_price.settlement_rule
+p
+  strong Product:
+  = @settlement_price.product
+p
+  strong Price:
+  = @settlement_price.price
+
+= link_to 'Edit', edit_settlement_price_path(@settlement_price)
+'|
+= link_to 'Back', settlement_prices_path

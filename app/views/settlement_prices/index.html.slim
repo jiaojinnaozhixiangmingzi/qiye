@@ -1,0 +1,25 @@
+h1 Listing settlement_prices
+
+table
+  thead
+    tr
+      th Settlement rule
+      th Product
+      th Price
+      th
+      th
+      th
+
+  tbody
+    - @settlement_prices.each do |settlement_price|
+      tr
+        td = settlement_price.settlement_rule
+        td = settlement_price.product
+        td = settlement_price.price
+        td = link_to 'Show', settlement_price
+        td = link_to 'Edit', edit_settlement_price_path(settlement_price)
+        td = link_to 'Destroy', settlement_price, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Settlement price', new_settlement_price_path

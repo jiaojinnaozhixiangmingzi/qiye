@@ -1,0 +1,20 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading#places
+        | 结算价目表
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th Name
+              th Comment
+              th Category
+              th
+              th
+              th
+          tbody
+            = render @settlement_rules
+        = will_paginate @settlement_rules, renderer: BootstrapPagination::Rails
+      .panel-footer
+        = link_to '新建结算规则', new_settlement_rule_path, class: 'btn btn-info btn-sm'

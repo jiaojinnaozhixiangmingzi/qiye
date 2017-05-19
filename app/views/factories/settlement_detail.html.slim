@@ -1,0 +1,35 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading#operations
+        | 基本信息
+      .panel-body
+        table.table.table-striped
+          tr
+            td width='15%' 时间
+            td width='35%' = params[:settlement_on]
+            td width='15%' 总计
+            td width='35%' = @factory_settlement_records.sum(:money).round(2)
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading#operations
+        | 结算明细
+      .panel-body
+        table.table.table-striped
+          thead
+            tr
+              th width='15%' 品类
+              th width='15%' 商品
+              th width='15%' 数量
+              th width='15%' 单价
+              th width='15%' 小计
+          tbody
+            - @factory_settlement_records.each do |factory_settlement_record|
+              tr
+                td = factory_settlement_record.category.name
+                td = factory_settlement_record.product.name
+                td = factory_settlement_record.amount
+                td = factory_settlement_record.price.round(2)
+                td = factory_settlement_record.money.round(2)

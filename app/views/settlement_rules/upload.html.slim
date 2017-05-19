@@ -1,0 +1,8 @@
+= simple_form_for :settlement_rule, url: upload_settlement_rule_path(@settlement_rule) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :file, as: :file
+
+  .form-actions
+    = f.button :submit, '提交'

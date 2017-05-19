@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong From date:
+  = @factory_settlement_rule.from_date
+p
+  strong Priority:
+  = @factory_settlement_rule.priority
+p
+  strong Factory:
+  = @factory_settlement_rule.factory
+p
+  strong Settlement rule:
+  = @factory_settlement_rule.settlement_rule
+
+= link_to 'Edit', edit_factory_settlement_rule_path(@factory_settlement_rule)
+'|
+= link_to 'Back', factory_settlement_rules_path

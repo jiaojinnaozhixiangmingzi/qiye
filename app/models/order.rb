@@ -3,6 +3,7 @@ class Order < ApplicationRecord
   belongs_to :category
   belongs_to :user
   belongs_to :address
+  belongs_to :factory
 
   has_many :waybills
 
@@ -13,6 +14,7 @@ class Order < ApplicationRecord
 
   has_one :voucher
   has_one :user_card_logs, as: :loggable
+
 
   def pay_it
     if self.voucher.money <= self.user.user_card.real_money + self.user.user_card.fake_money

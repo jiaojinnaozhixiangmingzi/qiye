@@ -1,0 +1,7 @@
+tr
+  td = settlement_rule.name
+  td = settlement_rule.comment
+  td = settlement_rule.category.name
+  td = link_to 'Show', settlement_rule
+  td = link_to 'Edit', edit_settlement_rule_path(settlement_rule)
+  td = link_to 'Destroy', settlement_rule, data: { confirm: 'Are you sure?' }, method: :delete

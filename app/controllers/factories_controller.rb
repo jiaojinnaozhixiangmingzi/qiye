@@ -12,7 +12,11 @@ class FactoriesController < ApplicationController
   # GET /factories/1
   # GET /factories/1.json
   def show
+    @factory_settlement_rules = @factory.factory_settlement_rules.order(from_date: :desc, priority: :desc)
+
+    @factory_settlement_records = @factory.factory_settlement_records.order(settlement_on: :desc).group(:settlement_on).sum(:money)
   end
+
 
   # GET /factories/new
   def new
@@ -61,6 +65,10 @@ class FactoriesController < ApplicationController
       format.html { redirect_to factories_url, notice: 'Factory was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def settlement_detail
+    @factory_settlement_records = @factory.factory_settlement_records.where(settlement_on: params[:settlement_on])
   end
 
   private
