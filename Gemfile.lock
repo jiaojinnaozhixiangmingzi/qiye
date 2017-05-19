@@ -12,7 +12,7 @@ GIT
     will_paginate (3.0.4)
 
 GEM
-  remote: https://ruby.taobao.org/
+  remote: https://gems.ruby-china.org/
   specs:
     actioncable (5.0.1)
       actionpack (= 5.0.1)
