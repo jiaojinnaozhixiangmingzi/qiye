@@ -146,7 +146,7 @@ created_at desc", params[:courierId]])
       else
         @order = @orders[0]
         @order.update_attributes(:courier_status => 2)
-        format.json { render :json => {:data => @orders}.to_json }
+        format.json { render :json => {:data => "Succ"}.to_json }
       end
     end
   end
