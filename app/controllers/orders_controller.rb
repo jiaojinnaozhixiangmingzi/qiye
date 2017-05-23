@@ -138,6 +138,18 @@ created_at desc", params[:courierId]])
     end
   end
 
+  def getOrderByFactory
+    @orders = Order.find_by_sql(["SELECT * FROM orders WHERE id in (SELECT order_id FROM waybills WHERE sender_type =
+ 'Factory' AND sender_id =?) ORDER BY cleaning_status;", params[:factoryId]])
+    respond_to do |format|
+      if @orders.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @orders}.to_json }
+      end
+    end
+  end
+
   def sendToFactory
     @orders = Order.find_by_sql(["SELECT * FROM orders WHERE id =?;", params[:orderId]])
     respond_to do |format|
