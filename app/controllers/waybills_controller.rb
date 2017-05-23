@@ -78,6 +78,7 @@ class WaybillsController < ApplicationController
     @orders = Order.find_by_sql(["SELECT * FROM orders where id = ?", params[:orderId]])
     @order = @orders[0]
     @order.update_attributes(:status => 1)
+    @order.update_attributes(:courier_status => 1)
 
     respond_to do |format|
       if @u_t_c.empty?

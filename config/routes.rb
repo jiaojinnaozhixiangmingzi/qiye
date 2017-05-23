@@ -138,6 +138,7 @@ Rails.application.routes.draw do
       post :createOrder
       post :getOrderByUser
       post :pay
+      post :getOrderByCourier
     end
   end
 

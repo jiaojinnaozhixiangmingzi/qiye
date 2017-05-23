@@ -126,6 +126,18 @@ created_at desc", params[:courierId]])
     end
   end
 
+  def getOrderByCourier
+    @orders = Order.find_by_sql(["SELECT * FROM orders WHERE id in (SELECT order_id FROM waybills WHERE sender_type =
+ 'Courier' AND sender_id =?) ORDER BY courier_status;", params[:courierId]])
+    respond_to do |format|
+      if @orders.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        format.json { render :json => {:data => @orders}.to_json }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
