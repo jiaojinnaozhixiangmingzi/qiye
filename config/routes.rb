@@ -141,6 +141,7 @@ Rails.application.routes.draw do
       post :getOrderByCourier
       post :getOrderByFactory
       post :sendToFactory
+      post :createProductItem
     end
   end
 

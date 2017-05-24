@@ -163,6 +163,30 @@ created_at desc", params[:courierId]])
     end
   end
 
+  def createProductItem
+    @orders = Order.find_by_sql(["SELECT * FROM orders WHERE id =?;", params[:orderId]])
+    respond_to do |format|
+      if @orders.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        @order = @orders[0]
+        @order.update_attributes(:cleaning_status => 1)
+        @items = Item.find_by_sql(["SELECT * FROM items WHERE order_id =?;", params[:orderId]])
+        @items.each do |item|
+          i = 0
+          length = item.amount
+          while i < length do
+            ProductItem.create(serial: item.order_id.to_s + '-' + item.product_id.to_s + '-' + i.to_s, status: 0,
+                               order_id:
+                item.order_id, product_id: item.product_id)
+            i += 1
+          end
+        end
+        format.json { render :json => {:data => "Succ"}.to_json }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
