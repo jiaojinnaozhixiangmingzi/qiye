@@ -187,6 +187,19 @@ created_at desc", params[:courierId]])
     end
   end
 
+  def finishCleaning
+    @orders = Order.find_by_sql(["SELECT * FROM orders WHERE id =?;", params[:orderId]])
+    respond_to do |format|
+      if @orders.empty?
+        format.json { render :json => {:data => "Get failed"}.to_json }
+      else
+        @order = @orders[0]
+        @order.update_attributes(:cleaning_status => 2)
+        format.json { render :json => {:data => "Succ"}.to_json }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
