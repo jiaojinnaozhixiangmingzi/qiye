@@ -1,8 +1,8 @@
 class ProductsController < ApplicationController
-  # load_and_authorize_resource
+  load_and_authorize_resource
 
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  # before_action :set_category
+  before_action :set_category
 
   # GET /products
   # GET /products.json
@@ -27,8 +27,6 @@ class ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
-    @product = @category.products.create(product_params)
-
     respond_to do |format|
       if @product.save
         format.html { redirect_to @category, notice: 'Product was successfully created.' }

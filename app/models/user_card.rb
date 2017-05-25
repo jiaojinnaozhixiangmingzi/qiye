@@ -11,8 +11,8 @@ class UserCard < ApplicationRecord
   end
 
   def charge(realMoney, money)
-    @userCardLog = UserCardLog.create(kind: 3, real_money: realMoney, fake_money:
-        money, user_card: self)
+    # @userCardLog = UserCardLog.create(kind: 3, real_money: realMoney, fake_money:
+    #     money, user_card: self)
     self.update_attributes(real_money: self.real_money + realMoney, fake_money: self.fake_money +
         money)
     return @userCardLog

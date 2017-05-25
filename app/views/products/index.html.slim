@@ -15,7 +15,7 @@ table
     - @products.each do |product|
       tr
         td = product.name
-        td = product.logo
+        td = image_tag qiniu_url(product.logo), size: '150x150'
         td = product.is_del
         td = product.category
         td = link_to 'Show', product
