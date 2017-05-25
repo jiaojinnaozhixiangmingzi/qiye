@@ -170,6 +170,7 @@ created_at desc", params[:courierId]])
         format.json { render :json => {:data => "Get failed"}.to_json }
       else
         @order = @orders[0]
+        @order.update_attributes(:status => 2)
         @order.update_attributes(:cleaning_status => 1)
         @items = Item.find_by_sql(["SELECT * FROM items WHERE order_id =?;", params[:orderId]])
         @items.each do |item|
